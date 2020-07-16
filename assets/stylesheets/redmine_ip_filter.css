@@ -1,0 +1,42 @@
+#admin-menu a.redmine-ip-filter { background-image: url(../images/redmine_ip_filter.png); }
+form.edit_filter_rule .tabular.settings p {
+  padding-left: 200px;
+}
+@media screen and (max-width: 899px) { form.edit_filter_rule .tabular.settings p { padding-left: 0px; } }
+form.edit_filter_rule .tabular p textarea {
+  padding-left: 0px;
+  width: 200px;
+}
+.forbidden {
+  margin: 40vh auto 0;
+  transform: translateY(-50%);
+  text-align: center;
+  width: 50%;
+}
+.forbidden h1 {
+  font-size: 1000%;
+  margin: 0px;
+  margin-bottom: -30px;
+}
+.forbidden h2 {
+  font-size: 380%;
+  margin: 0px
+}
+.forbidden p.message {
+  margin: 0px;
+  text-align: center;
+  padding-bottom: 16px;
+}
+.forbidden p.info {
+  margin: 0px;
+  clear: left;
+  text-align: left;
+  padding-left: 160px;
+}
+.forbidden p label {
+  font-weight: bold;
+  float: left;
+  text-align: right;
+  margin-left: -160px;
+  width: 150px;
+}

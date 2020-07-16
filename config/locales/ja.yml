@@ -1,0 +1,28 @@
+# Japanese strings go here for Rails i18n
+ja:
+  label_ip_filter: IPアドレス制限
+
+  redmine_ip_filter:
+    label_filter_rules:     フィルタールール
+    label_filter_rule_new:  新しいフィルタールール
+    label_filter_rule_edit: フィルタールール編集
+    label_address_count_and_limit: "(%{count} 件 / 最大 %{limit} 件)"
+
+  activerecord:
+    attributes:
+      filter_rule:
+        allowed_ips: 接続を許可するIPアドレス
+
+  notice_forbidden_acces_from_your_ip: "%{ip} からのアクセスは許可されていません。"
+  notice_filter_rule_was_successfully_created: フィルタールールを作成しました。
+  notice_filter_rule_was_successfully_updated: フィルタールールを更新しました。
+  notice_filter_rule_was_successfully_deleted: フィルタールールを削除しました。
+  error_invalid_ip_addres_format_or_value:     IPアドレスとしてのフォーマットまたは値が正しくありません (%{message}) 。
+  error_filter_rules_have_to_include_admin_ip: フィルタールール全体には管理者のIPアドレスが含まなければなりません。
+  error_filter_rules_have_to_include_admin_ip_or_empty: フィルタールール全体には管理者のIPアドレスが含まれるか、フィルタールール全体を空にしなければなりません。
+  error_filter_rules_over_limit: フィルタールールの個数が上限 %{limit} を超えるため登録できません。
+  error_filter_rules_ipv6: "IPv6アドレス %{ip} は登録できません。"
+  error_filter_rules_private: "プライベートアドレス %{ip} は登録できません。"
+  error_filter_rules_loopback: "ループバックアドレス %{ip} は登録できません。"
+  error_filter_rules_linklocal: "リンクローカルアドレス %{ip} は登録できません。"
+  error_filter_rules_include_others: "%{ip} は %{network_address} の範囲に含まれているため登録できません。"

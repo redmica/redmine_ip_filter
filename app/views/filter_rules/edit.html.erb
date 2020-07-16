@@ -1,0 +1,13 @@
+<h2><%= l(:label_ip_filter) %></h2>
+
+<%= form_for @filter_rule, :url => filter_rule_path, :html => { :class => 'edit_filter_rule' } do |f| %>
+  <%= error_messages_for 'filter_rule' %>
+  <div class="box tabular settings">
+    <p>
+      <%= f.label :allowed_ips %><%= f.text_area :allowed_ips, :rows => 20 %>
+      <em class="info"><%= l(:text_line_separated) %></em>
+      <em class="info"><%= t('redmine_ip_filter.label_address_count_and_limit', :count => @filter_rule.allowed_ip_list.count, :limit => FilterRule::ALLOWED_IP_LIMIT) %></em>
+    </p>
+  </div>
+  <%= submit_tag l(:button_save) %>
+<% end %>
