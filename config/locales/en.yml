@@ -19,6 +19,7 @@ en:
   notice_filter_rule_was_successfully_deleted: FilterRule was Successfully deleted. 
   error_invalid_ip_addres_format_or_value:     Invalid IP Address Format or Value (%{message}).
   error_filter_rules_have_to_include_admin_ip: FilterRules have to include Admin IP.
+  error_filter_rules_have_to_include_admin_ip: FilterRules have to include your current IP address (%{ip}).
   error_filter_rules_have_to_include_admin_ip_or_empty: FilterRules have to include Admin IP or empty.
   error_filter_rules_over_limit: FilterRule cannot be saved because FilterRules count over limit %{limit}.
   error_filter_rules_ipv6: "FilterRule cannot be saved because %{ip}」is IPv6 address."

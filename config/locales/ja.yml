@@ -18,7 +18,7 @@ ja:
   notice_filter_rule_was_successfully_updated: フィルタールールを更新しました。
   notice_filter_rule_was_successfully_deleted: フィルタールールを削除しました。
   error_invalid_ip_addres_format_or_value:     IPアドレスとしてのフォーマットまたは値が正しくありません (%{message}) 。
-  error_filter_rules_have_to_include_admin_ip: フィルタールール全体には管理者のIPアドレスが含まなければなりません。
+  error_filter_rules_have_to_include_admin_ip: フィルタールール全体には現在接続中のIPアドレス (%{ip}) が含まなければなりません。
   error_filter_rules_have_to_include_admin_ip_or_empty: フィルタールール全体には管理者のIPアドレスが含まれるか、フィルタールール全体を空にしなければなりません。
   error_filter_rules_over_limit: フィルタールールの個数が上限 %{limit} を超えるため登録できません。
   error_filter_rules_ipv6: "IPv6アドレス %{ip} は登録できません。"
