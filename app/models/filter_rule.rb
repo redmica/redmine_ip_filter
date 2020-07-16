@@ -61,7 +61,7 @@ class FilterRule < Setting
       end
       # validate admin_remote_ip inclusion
       unless obj.valid_access?(obj.admin_remote_ip)
-        obj.errors.add :base, l(:error_filter_rules_have_to_include_admin_ip)
+        obj.errors.add :base, l(:error_filter_rules_have_to_include_admin_ip, :ip => obj.admin_remote_ip)
       end
     end
   end

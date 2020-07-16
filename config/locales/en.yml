@@ -13,7 +13,7 @@ en:
   notice_forbidden_acces_from_your_ip: You don't have permission to access from IP( %{ip} ).
   notice_filter_rule_was_successfully_updated: FilterRule was Successfully updated.
   error_invalid_ip_addres_format_or_value:     Invalid IP Address Format or Value (%{message}).
-  error_filter_rules_have_to_include_admin_ip: FilterRules have to include Admin IP.
+  error_filter_rules_have_to_include_admin_ip: FilterRules have to include your current IP address (%{ip}).
   error_filter_rules_over_limit: FilterRule cannot be saved because FilterRules count over limit %{limit}.
   error_filter_rules_ipv6: "FilterRule cannot be saved because %{ip}」is IPv6 address."
   error_filter_rules_private: "FilterRule cannot be saved because %{ip} is private address."
