@@ -8,15 +8,15 @@ en:
   activerecord:
     attributes:
       filter_rule:
-        allowed_ips: IP addr to allow access
+        allowed_ips: Allowed IP addresses
 
-  notice_forbidden_acces_from_your_ip: You don't have permission to access from IP( %{ip} ).
-  notice_filter_rule_was_successfully_updated: FilterRule was Successfully updated.
-  error_invalid_ip_addres_format_or_value:     Invalid IP Address Format or Value (%{message}).
-  error_filter_rules_have_to_include_admin_ip: FilterRules have to include your current IP address (%{ip}).
-  error_filter_rules_over_limit: FilterRule cannot be saved because FilterRules count over limit %{limit}.
-  error_filter_rules_ipv6: "FilterRule cannot be saved because %{ip}」is IPv6 address."
-  error_filter_rules_private: "FilterRule cannot be saved because %{ip} is private address."
-  error_filter_rules_loopback: "FilterRule cannot be saved because %{ip} is loopback address."
-  error_filter_rules_linklocal: "FilterRule cannot be saved because %{ip} is linklocal address."
-  error_filter_rules_include_others: "FilterRule cannot be saved because %{ip} is in the range of %{network_address}."
+  notice_forbidden_acces_from_your_ip: Your IP address %{ip} is not allowed.
+  notice_filter_rule_was_successfully_updated: Allowed IP addresses have been successfully updated.
+  error_invalid_ip_addres_format_or_value:     Invalid IP address (%{message}).
+  error_filter_rules_have_to_include_admin_ip: Your current IP address must be included in allowed IP addresses (%{ip}).
+  error_filter_rules_over_limit: Allowed IP addresses cannot be saved because the number of FilterRules over the limit %{limit}.
+  error_filter_rules_ipv6: "Allowed IP addresses cannot be saved because %{ip} is an IPv6 address."
+  error_filter_rules_private: "Allowed IP addresses cannot be saved because %{ip} is a private address."
+  error_filter_rules_loopback: "Allowed IP addresses cannot be saved because %{ip} is a loopback address."
+  error_filter_rules_linklocal: "Allowed IP addresses cannot be saved because %{ip} is a linklocal address."
+  error_filter_rules_include_others: "Allowed IP addresses cannot be saved because %{ip} is in the range of %{network_address}."
