@@ -2,6 +2,8 @@
 
 <%= form_for @filter_rule, :url => filter_rule_path, :html => { :class => 'edit_filter_rule' } do |f| %>
   <%= error_messages_for 'filter_rule' %>
+  <p><%= t(:label_ip_filter_description) %></p>
+  <p><%= t(:label_ip_filter_formats_html) %></p>
   <div class="box tabular settings">
     <p>
       <%= f.label :allowed_ips %><%= f.text_area :allowed_ips, :rows => 20 %>

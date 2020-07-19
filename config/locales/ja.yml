@@ -1,6 +1,8 @@
 # Japanese strings go here for Rails i18n
 ja:
   label_ip_filter: IPアドレス制限
+  label_ip_filter_description: 指定したIPアドレスからのみアクセスできるよう制限します。アクセス許可IPアドレスが指定されていない場合はどこからでもアクセスできます。
+  label_ip_filter_formats_html: "<strong>登録可能なIPアドレスの形式例:</strong><br><strong><code>198.51.100.10</code></strong> (単独のIPアドレス), <strong><code>192.0.2.0/28</code></strong> (CIDR記法によるアドレスブロック), <strong><code>192.0.2.0/255.255.255.240</code></strong> (サブネットマスク指定によるアドレスブロック)"
 
   redmine_ip_filter:
     label_address_count_and_limit: "(%{count} 件 / 最大 %{limit} 件)"
