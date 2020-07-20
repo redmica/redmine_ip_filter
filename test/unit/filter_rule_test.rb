@@ -117,6 +117,6 @@ class FilterRuleTest < ActiveSupport::TestCase
     @filter_rule.admin_remote_ip = "22.33.44.55"
     @filter_rule.allowed_ips = "22.33.43.0/24"
     assert !@filter_rule.valid?
-    assert_include I18n.translate(:error_filter_rules_have_to_include_admin_ip), @filter_rule.errors[:base]
+    assert_include I18n.translate(:error_filter_rules_have_to_include_admin_ip, :ip => @filter_rule.admin_remote_ip), @filter_rule.errors[:base]
   end
 end
