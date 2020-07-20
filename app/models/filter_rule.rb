@@ -19,10 +19,13 @@ class FilterRule < Setting
     remote_ip_addr = IPAddr.new(remote_ip)
     return true if remote_ip_addr.loopback?
 
-    allowed_ip_addrs = self.allowed_ip_list.collect { |ip| IPAddr.new(ip) rescue nil }.reject(&:nil?)
-    return true if allowed_ip_addrs.empty?
-
-    allowed_ip_addrs.select { |allowed_ip_addr| allowed_ip_addr.include?(remote_ip_addr) }.any?
+    self.allowed_ip_list.any? do |ip|
+      begin
+        IPAddr.new(ip).include?(remote_ip_addr)
+      rescue IPAddr::Error
+        nil
+      end
+    end
   end
 
   def allowed_ips=(ips)
