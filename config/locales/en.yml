@@ -1,6 +1,6 @@
 # English strings go here for Rails i18n
 en:
-  label_ip_filter: IP Filter
+  label_ip_filter: IP address filter
 
   redmine_ip_filter:
     label_address_count_and_limit: "(%{count} / limit %{limit})"

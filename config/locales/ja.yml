@@ -1,6 +1,6 @@
 # Japanese strings go here for Rails i18n
 ja:
-  label_ip_filter: IPアドレス制限
+  label_ip_filter: IPアドレスフィルター
 
   redmine_ip_filter:
     label_address_count_and_limit: "(%{count} 件 / 最大 %{limit} 件)"
