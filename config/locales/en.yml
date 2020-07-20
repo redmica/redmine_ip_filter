@@ -1,6 +1,8 @@
 # English strings go here for Rails i18n
 en:
   label_ip_filter: IP address filter
+  label_ip_filter_description: Restricts accesss to the app from the allowed IP addresses only. Any IP address will allowed to access when the allowed IP addresses is empty.
+  label_ip_filter_formats_html: "<strong>Possible IP address formats:</strong><br><strong><code>198.51.100.10</code></strong> (single IP address), <strong><code>192.0.2.0/28</code></strong> (address block using CIDR notation), <strong><code>192.0.2.0/255.255.255.240</code></strong> (address block using subnet mask)"
 
   redmine_ip_filter:
     label_address_count_and_limit: "(%{count} / limit %{limit})"
