@@ -14,18 +14,18 @@ form.edit_filter_rule .tabular p textarea {
   width: 50%;
 }
 .forbidden h1 {
-  font-size: 1000%;
-  margin: 0px;
-  margin-bottom: -30px;
-}
-.forbidden h2 {
-  font-size: 380%;
-  margin: 0px
+  margin: 0 0 30px 0;
+  font-size: 36px;
+  color: #888;
 }
 .forbidden p.message {
-  margin: 0px;
+  padding: 20px 10px;
+  margin: 30px 0;
+  border-radius: 3px;
+  font-size: 18px;
   text-align: center;
-  padding-bottom: 16px;
+  color: #620f0f;
+  background: #ffc6c6;
 }
 .forbidden p.info {
   margin: 0px;

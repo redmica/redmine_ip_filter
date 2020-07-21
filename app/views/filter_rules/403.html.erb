@@ -5,10 +5,9 @@
 <title>403 <%= @message %></title>
 <%= call_hook :view_layouts_base_html_head %>
 </head>
-<body class=>
+<body>
   <div class="forbidden">
-    <h1>403</h1>
-    <h2>Forbidden</h2>
+    <h1>403 Forbidden</h1>
     <p class="message"><%= @message %></p>
     <p class="info"><label>Remote Address:</label> <%= request.remote_ip %></p>
     <p class="info"><label>User Agent:</label> <%= request.headers.env['HTTP_USER_AGENT'] %></p>
