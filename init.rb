@@ -1,5 +1,6 @@
 require_dependency 'application_controller_patch'
 require_dependency 'redmine_ip_filter_hook_listener'
+require_dependency 'ip_filter_config'
 Redmine::Plugin.register :redmine_ip_filter do
   name 'Redmine Ip Filter'
   author 'Far End Technologies Corporation'
