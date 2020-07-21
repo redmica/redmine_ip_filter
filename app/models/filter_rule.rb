@@ -18,7 +18,9 @@ class FilterRule < Setting
 
     remote_ip_addr = IPAddr.new(remote_ip)
 
-    self.allowed_ip_list.any? do |ip|
+    return true if self.allowed_ip_list.empty?
+    always_allowed_ip_list = IPFilterConfig['always_allowed_ip_list'] || []
+    (self.allowed_ip_list | always_allowed_ip_list).any? do |ip|
       begin
         IPAddr.new(ip).include?(remote_ip_addr)
       rescue IPAddr::Error
