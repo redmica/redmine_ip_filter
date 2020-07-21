@@ -20,6 +20,7 @@ module RedmineIPFilter
             }
             format.any { head 403 }
           end
+          logger.info "redmine_ip_filter: rejected access from #{request.remote_ip}"
           return false
         end
       end
