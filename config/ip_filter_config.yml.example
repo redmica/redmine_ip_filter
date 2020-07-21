@@ -1,0 +1,4 @@
+production:
+  additional_allowed_ip_list:
+    - 10.1.0.1
+    - 10.1.0.2
