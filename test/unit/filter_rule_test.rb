@@ -24,11 +24,6 @@ class FilterRuleTest < ActiveSupport::TestCase
     assert !FilterRule.valid_access?(remote_ip)
   end
 
-  def test_valid_access_returns_true_remote_ip_is_loopback_addr
-    assert @filter_rule.valid_access?('127.0.0.1')
-    assert @filter_rule.valid_access?('::1')
-  end
-
   def test_valid_access_returns_true_allowed_ips_empty
     @filter_rule.value = {}
     assert @filter_rule.valid_access?('99.88.77.66')

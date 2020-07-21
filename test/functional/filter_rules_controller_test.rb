@@ -10,7 +10,7 @@ class FilterRulesControllerTest < ActionController::TestCase
   def setup
     @request.session[:user_id] = 1 # admin
     @filter_rule = FilterRule.find_or_default
-    ActionController::TestRequest.any_instance.stubs(:remote_ip).returns('127.0.0.1')
+    ActionController::TestRequest.any_instance.stubs(:remote_ip).returns('11.22.33.44')
   end
 
   def test_edit
@@ -43,7 +43,7 @@ class FilterRulesControllerTest < ActionController::TestCase
   end
 
   def test_update
-    new_address = '33.44.55.66'
+    new_address = "11.22.33.44\r33.44.55.66"
     assert @filter_rule.persisted?
 
     put :update, :params => { :filter_rule => { :allowed_ips => new_address } }

@@ -17,7 +17,6 @@ class FilterRule < Setting
     return true if self.allowed_ips.blank?
 
     remote_ip_addr = IPAddr.new(remote_ip)
-    return true if remote_ip_addr.loopback?
 
     self.allowed_ip_list.any? do |ip|
       begin
