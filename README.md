@@ -5,7 +5,7 @@ Redmine plugin for access filtering using IP address.
 ## Features
 
 * Filtering access to redmine site. 
-* Setting the filtering roles on Redmine Admin-Page.
+* Setting the filtering rules on Redmine Admin-Page.
 
 ## Filtering access to redmine site. 
 
@@ -13,7 +13,7 @@ add the Filtering module on Redmine, and filtering the access to Redmine site us
 If the Access remote IP address corresponds to the network address or host address registered in the filtering rules, allow access to the Redmine site.
 If the filtering rules is not registered, to allow all access.
 
-## Setting the filtering roles on Redmine Admin-Page.
+## Setting the filtering rules on Redmine Admin-Page.
 
 setting of filtering rules, operate from the Redmine administrator page.
 
