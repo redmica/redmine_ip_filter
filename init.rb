@@ -1,6 +1,6 @@
-require_dependency 'application_controller_patch'
 require_dependency 'redmine_ip_filter_hook_listener'
 require_dependency 'ip_filter_config'
+
 Redmine::Plugin.register :redmine_ip_filter do
   name 'Redmine Ip Filter'
   author 'Far End Technologies Corporation'
@@ -13,3 +13,8 @@ Redmine::Plugin.register :redmine_ip_filter do
 end
 
 Rails.application.config.action_dispatch.trusted_proxies = %W(#{ENV['RemoteIPTrustedProxy']} 127.0.0.1 ::1).reject(&:empty?).map{ |proxy| IPAddr.new(proxy) }
+
+Rails.configuration.to_prepare do
+  require_dependency 'application_controller_patch'
+  ApplicationController.send(:include, RedmineIPFilter::ApplicationControllerPatch)
+end
