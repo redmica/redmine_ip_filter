@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_dependency 'redmine_ip_filter_hook_listener'
 
 Redmine::Plugin.register :redmine_ip_filter do

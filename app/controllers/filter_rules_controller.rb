@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FilterRulesController < ApplicationController
   layout 'admin'
   self.main_menu = false
