@@ -27,5 +27,3 @@ module RedmineIPFilter
     end
   end
 end
-
-ApplicationController.send(:include, RedmineIPFilter::ApplicationControllerPatch) unless ApplicationController.included_modules.include? RedmineIPFilter::ApplicationControllerPatch
