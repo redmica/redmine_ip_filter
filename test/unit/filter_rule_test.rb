@@ -114,7 +114,7 @@ class FilterRuleTest < ActiveSupport::TestCase
   def test_validate_address_include_other_address
     @filter_rule.allowed_ips = "11.22.33.0/24\r11.22.33.1"
     assert !@filter_rule.valid?
-    assert_include I18n.translate(:error_filter_rules_include_others, :ip => '11.22.33.1', :network_address => '11.22.33.0'), @filter_rule.errors[:base]
+    assert_include I18n.translate(:error_filter_rules_include_others, :ip => '11.22.33.1', :network_address => '11.22.33.0/24'), @filter_rule.errors[:base]
   end
 
   def test_validate_admin_remote_ip_inclusion
