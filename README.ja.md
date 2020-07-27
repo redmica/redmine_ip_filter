@@ -17,7 +17,7 @@ Redmineにフィルタリングモジュールを追加し、アクセス元のI
 
 フィルタリングルールの設定は、Redmineの管理者ページから操作します。
 
-![Setting Page](images/setting_page.png?raw=true "Setting Page on Redmine Admine Page")
+![Setting Page](images/setting_page.ja.png?raw=true "Setting Page on Redmine Admine Page")
 
 ホストアドレスやネットワークアドレスをフィルタリングルールに指定することができます。
 Redmineの管理画面を操作しているアクセス元IPアドレスは、フィルタリングルールに含まれている必要があります。
