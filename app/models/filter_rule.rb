@@ -31,11 +31,11 @@ class FilterRule < Setting
   end
 
   def allowed_ips=(ips)
-    self.value = {:allowed_ips => ips.to_s}
+    self.value = {'allowed_ips' => ips.to_s}
   end
 
   def allowed_ips
-    (self.value[:allowed_ips] || self.value['allowed_ips'])
+    self.value['allowed_ips']
   end
 
   def allowed_ip_list

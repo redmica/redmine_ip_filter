@@ -50,12 +50,10 @@ class FilterRuleTest < ActiveSupport::TestCase
 
   def test_allowed_ips=
     @filter_rule.allowed_ips = '44.55.66.77'
-    assert_equal '44.55.66.77', @filter_rule.value[:allowed_ips]
+    assert_equal '44.55.66.77', @filter_rule.value['allowed_ips']
   end
 
   def test_allowed_ips
-    @filter_rule.value = { :allowed_ips => '44.55.66.77' }
-    assert_equal '44.55.66.77', @filter_rule.allowed_ips
     @filter_rule.value = { 'allowed_ips' => '55.66.77.88' }
     assert_equal '55.66.77.88', @filter_rule.allowed_ips
   end

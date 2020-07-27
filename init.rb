@@ -11,7 +11,7 @@ Redmine::Plugin.register :redmine_ip_filter do
   url 'http://github.com/redmica/redmine_ip_filter'
   author_url 'https://hosting.redmine.jp/'
   menu :admin_menu, :redmine_ip_filter, { controller: :filter_rules, action: :edit }, caption: :label_ip_filter, :html => { :class => 'icon icon-ip-filter' }
-  settings :default => { :allowed_ips => '' }
+  settings :default => { 'allowed_ips' => '' }
 end
 
 Rails.application.config.action_dispatch.trusted_proxies = %W(#{ENV['RemoteIPTrustedProxy']} 127.0.0.1 ::1).reject(&:empty?).map{ |proxy| IPAddr.new(proxy) }
