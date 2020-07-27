@@ -65,8 +65,11 @@ class FilterRule < Setting
           errors.add(:base, l(:error_filter_rules_loopback, :ip => ip)) if ipaddr.loopback?
           errors.add(:base, l(:error_filter_rules_linklocal, :ip => ip)) if ipaddr.link_local?
         end
-        if (network_address = allowed_ip_addrs.values.find{|ip| ip != ipaddr && ip.include?(ipaddr)})
-          errors.add(:base, l(:error_filter_rules_include_others, :ip => ip, :network_address => network_address))
+        allowed_ip_addrs.each do |ip_other, ipaddr_other|
+          next if ipaddr.object_id == ipaddr_other.object_id
+          if ipaddr_other.include?(ipaddr)
+            errors.add(:base, l(:error_filter_rules_include_others, :ip => ip, :network_address => ip_other))
+          end
         end
       end
       # validate admin_remote_ip inclusion
