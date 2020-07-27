@@ -49,8 +49,13 @@ class FilterRule < Setting
     end
     # validate format
     allowed_ip_addrs = obj.allowed_ip_list.collect do |ip|
-      [ip, IPAddr.new(ip)] rescue obj.errors.add(:base, l(:error_invalid_ip_addres_format_or_value, :message => $!.message)) && []
-    end.delete_if(&:empty?).to_h
+      begin
+        [ip, IPAddr.new(ip)]
+      rescue IPAddr::Error => e
+        obj.errors.add(:base, l(:error_invalid_ip_addres_format_or_value, :message => e.message))
+        nil
+      end
+    end.compact.to_h
     if allowed_ip_addrs.count > 0
       allowed_ip_addrs.each do |ip, ipaddr|
         if ipaddr.ipv6? # IPv6
