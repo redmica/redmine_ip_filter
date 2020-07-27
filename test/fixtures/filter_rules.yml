@@ -1,4 +1,0 @@
-one:
-  id: 1
-  name: plugin_redmine_ip_filter
-  value: { allowed_ips: "11.22.33.44\r22.33.44.55" }

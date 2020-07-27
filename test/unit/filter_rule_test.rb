@@ -3,11 +3,12 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class FilterRuleTest < ActiveSupport::TestCase
-  fixtures :filter_rules
 
   def setup
     @filter_rule = FilterRule.find_or_default
     @filter_rule.admin_remote_ip = '11.22.33.44'
+    @filter_rule.allowed_ips="11.22.33.44\r22.33.44.55"
+    @filter_rule.save!
   end
 
   def test_class_find_or_default

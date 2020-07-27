@@ -5,13 +5,13 @@ require File.expand_path('../../test_helper', __FILE__)
 class FilterRulesControllerTest < ActionController::TestCase
   include Redmine::I18n
 
-  fixtures :filter_rules, :users,
-           :members, :member_roles,
-           :groups_users
+  fixtures :users
 
   def setup
     @request.session[:user_id] = 1 # admin
     @filter_rule = FilterRule.find_or_default
+    @filter_rule.allowed_ips="11.22.33.44\r22.33.44.55"
+    @filter_rule.save!
     ActionController::TestRequest.any_instance.stubs(:remote_ip).returns('11.22.33.44')
   end
 
