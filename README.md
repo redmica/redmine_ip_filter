@@ -52,6 +52,44 @@ $ cd /path/to/redmine
 $ rm -rf plugins/redmine_ip_filter
 ```
 
+## Command line tools
+
+### Add IP addresses to the allowed IP addresses
+
+```
+$ cd /path/to/redmine
+$ bin/rails redmine_ip_filter:filters:add ADDR=198.51.100.10
+ADD     198.51.100.10
+$ bin/rails redmine_ip_filter:filters:add ADDR=198.51.100.11,192.0.2.0/28
+ADD     198.51.100.11
+ADD     192.0.2.0/28
+```
+
+### Delete IP addresses from the allowed IP addresses
+
+```
+$ cd /path/to/redmine
+$ bin/rails redmine_ip_filter:filters:delete ADDR=198.51.100.11
+DELETE  198.51.100.11
+```
+
+### Show the allowed IP addresses
+
+```
+$ bin/rails redmine_ip_filter:filters:show
+198.51.100.10
+192.0.2.0/28
+```
+
+### Test if given IP addresses are allowed
+
+```
+$ bin/rails redmine_ip_filter:filters:test REMOTE_ADDR=192.0.2.15,192.0.2.16
+ALLOW   192.0.2.15
+REJECT  192.0.2.16
+```
+
+
 ## Licence
 
 This plugin is licensed under the GNU General Public License, version 2 (GPLv2)
