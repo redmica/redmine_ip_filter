@@ -31,7 +31,7 @@ class ApplicationControllerPatchTest < Redmine::IntegrationTest
 
     get '/login'
     assert_response :forbidden
-    assert_select 'div.forbidden p.message', :text => I18n.translate(:notice_forbidden_acces_from_your_ip, :ip => invalid_address)
+    assert_select 'div.forbidden p.message', :text => I18n.translate(:notice_forbidden_access_from_your_ip, :ip => invalid_address)
     assert_select 'div.forbidden p.info', :text => "Remote Address: #{invalid_address}"
   end
 

@@ -12,7 +12,7 @@ en:
       filter_rule:
         allowed_ips: Allowed IP addresses
 
-  notice_forbidden_acces_from_your_ip: Your IP address %{ip} is not allowed.
+  notice_forbidden_access_from_your_ip: Your IP address %{ip} is not allowed.
   notice_filter_rule_was_successfully_updated: Allowed IP addresses have been successfully updated.
   error_invalid_ip_addres_format_or_value:     Invalid IP address (%{message}).
   error_filter_rules_have_to_include_admin_ip: Your current IP address must be included in allowed IP addresses (%{ip}).
