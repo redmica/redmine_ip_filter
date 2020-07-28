@@ -15,7 +15,7 @@ module RedmineIPFilter
       def check_remote_ip
         unless FilterRule.valid_access?(request.remote_ip)
           @project = nil
-          @message = l(:notice_forbidden_acces_from_your_ip, :ip => request.remote_ip)
+          @message = l(:notice_forbidden_access_from_your_ip, :ip => request.remote_ip)
           respond_to do |format|
             format.html {
               render :template => 'filter_rules/403', :layout => false, :status => 403

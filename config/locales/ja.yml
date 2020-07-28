@@ -12,7 +12,7 @@ ja:
       filter_rule:
         allowed_ips: アクセス許可IPアドレス
 
-  notice_forbidden_acces_from_your_ip: "%{ip} からのアクセスは許可されていません。"
+  notice_forbidden_access_from_your_ip: "%{ip} からのアクセスは許可されていません。"
   notice_filter_rule_was_successfully_updated: アクセス許可IPアドレスを更新しました。
   error_invalid_ip_addres_format_or_value:     IPアドレスとしてのフォーマットまたは値が正しくありません (%{message}) 。
   error_filter_rules_have_to_include_admin_ip: アクセス許可IPアドレスは現在接続中のIPアドレス (%{ip}) を含まなければなりません。
