@@ -10,7 +10,7 @@ class FilterRulesControllerTest < ActionController::TestCase
   def setup
     @request.session[:user_id] = 1 # admin
     @filter_rule = FilterRule.find_or_default
-    @filter_rule.allowed_ips="11.22.33.44\r22.33.44.55"
+    @filter_rule.allowed_ips="11.22.33.44\n22.33.44.55"
     @filter_rule.save!
     ActionController::TestRequest.any_instance.stubs(:remote_ip).returns('11.22.33.44')
   end
@@ -18,7 +18,7 @@ class FilterRulesControllerTest < ActionController::TestCase
   def test_edit
     get :edit
     assert_response :success
-    assert_select 'textarea#filter_rule_allowed_ips', :text => "11.22.33.44\r22.33.44.55"
+    assert_select 'textarea#filter_rule_allowed_ips', :text => "11.22.33.44\n22.33.44.55"
   end
 
   def test_create
@@ -45,7 +45,7 @@ class FilterRulesControllerTest < ActionController::TestCase
   end
 
   def test_update
-    new_address = "11.22.33.44\r33.44.55.66"
+    new_address = "11.22.33.44\n33.44.55.66"
     assert @filter_rule.persisted?
 
     put :update, :params => { :filter_rule => { :allowed_ips => new_address } }
@@ -63,6 +63,6 @@ class FilterRulesControllerTest < ActionController::TestCase
     assert_select 'textarea#filter_rule_allowed_ips', :text => invalid_address
     assert_select 'div#errorExplanation li', :text => I18n.translate(:error_invalid_ip_addres_format_or_value, :message => "invalid address: #{invalid_address}")
     @filter_rule.reload
-    assert_equal "11.22.33.44\r22.33.44.55", @filter_rule.allowed_ips
+    assert_equal "11.22.33.44\n22.33.44.55", @filter_rule.allowed_ips
   end
 end
