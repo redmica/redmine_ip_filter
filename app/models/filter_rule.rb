@@ -39,7 +39,7 @@ class FilterRule < Setting
   end
 
   def allowed_ip_list
-    self.allowed_ips.to_s.split.reject(&:blank?)
+    self.allowed_ips.to_s.split
   end
 
   validate do |obj|
