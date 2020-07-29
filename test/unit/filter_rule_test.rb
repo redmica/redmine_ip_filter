@@ -7,7 +7,7 @@ class FilterRuleTest < ActiveSupport::TestCase
   def setup
     @filter_rule = FilterRule.find_or_default
     @filter_rule.admin_remote_ip = '11.22.33.44'
-    @filter_rule.allowed_ips="11.22.33.44\r22.33.44.55"
+    @filter_rule.allowed_ips="11.22.33.44\n22.33.44.55"
     @filter_rule.save!
   end
 
@@ -59,7 +59,7 @@ class FilterRuleTest < ActiveSupport::TestCase
   end
 
   def test_allowed_ip_list
-    FilterRule.any_instance.stubs(:allowed_ips).returns("11.22.33.44\r\r22.33.44.55")
+    FilterRule.any_instance.stubs(:allowed_ips).returns("11.22.33.44\n\n22.33.44.55")
     assert_equal ['11.22.33.44', '22.33.44.55'], @filter_rule.allowed_ip_list
   end
 
@@ -67,17 +67,17 @@ class FilterRuleTest < ActiveSupport::TestCase
     org_limit = FilterRule.send(:remove_const, :ALLOWED_IP_LIMIT)
     FilterRule.const_set(:ALLOWED_IP_LIMIT, 1)
 
-    @filter_rule.allowed_ips = "11.22.33.44\r22.33.44.55"
+    @filter_rule.allowed_ips = "11.22.33.44\n22.33.44.55"
     assert !@filter_rule.valid?
     assert_include I18n.translate(:error_filter_rules_over_limit, limit: 1), @filter_rule.errors[:base]
-    @filter_rule.allowed_ips = "11.22.33.44\r22.33.44.55"
+    @filter_rule.allowed_ips = "11.22.33.44\n22.33.44.55"
 
     FilterRule.send(:remove_const, :ALLOWED_IP_LIMIT)
     FilterRule.const_set(:ALLOWED_IP_LIMIT, org_limit)
   end
 
   def test_validate_format
-    @filter_rule.allowed_ips = "11.22.33.44\r\r22.33.44.0/24\r22.33.44.Go"
+    @filter_rule.allowed_ips = "11.22.33.44\n\n22.33.44.0/24\n22.33.44.Go"
     assert !@filter_rule.valid?
     assert_include I18n.translate(:error_invalid_ip_addres_format_or_value, :message => 'invalid address: 22.33.44.Go'), @filter_rule.errors[:base]
   end
@@ -111,7 +111,7 @@ class FilterRuleTest < ActiveSupport::TestCase
   end
 
   def test_validate_address_include_other_address
-    @filter_rule.allowed_ips = "11.22.33.0/24\r11.22.33.1"
+    @filter_rule.allowed_ips = "11.22.33.0/24\n11.22.33.1"
     assert !@filter_rule.valid?
     assert_include I18n.translate(:error_filter_rules_include_others, :ip => '11.22.33.1', :network_address => '11.22.33.0/24'), @filter_rule.errors[:base]
   end
