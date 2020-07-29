@@ -31,7 +31,7 @@ class FilterRule < Setting
   end
 
   def allowed_ips=(ips)
-    self.value = {'allowed_ips' => ips.to_s}
+    self.value = {'allowed_ips' => ips.to_s.split.join("\n")}
   end
 
   def allowed_ips
