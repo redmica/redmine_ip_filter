@@ -22,7 +22,9 @@ module RedmineIPFilter
             }
             format.any { head 403 }
           end
-          logger.info "redmine_ip_filter: rejected access from #{request.remote_ip}"
+          logger.info "redmine_ip_filter: rejected access from #{request.remote_ip} " \
+            "(HTTP_CLIENT_IP=#{request.client_ip.inspect} " \
+            "HTTP_X_FORWARDED_FOR=#{request.x_forwarded_for.inspect})"
           return false
         end
       end
