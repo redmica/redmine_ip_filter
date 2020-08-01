@@ -16,7 +16,7 @@ namespace :redmine_ip_filter do
         abort 'IP addresses to add must be specified with ADDR environment variable'
       end
       filter_rule = FilterRule.find_or_default
-      filter_rule.allowed_ips = (filter_rule.allowed_ips.split + addresses).join("\r\n")
+      filter_rule.allowed_ips = (filter_rule.allowed_ips.split + addresses).join("\n")
       unless filter_rule.save
         STDERR.puts filter_rule.errors.messages[:base]
         exit 1
@@ -47,7 +47,7 @@ namespace :redmine_ip_filter do
       
       allowed_addresses -= delete_addresses
       # Use the Setting object to skip validations
-      Setting.plugin_redmine_ip_filter = {:allowed_ips => allowed_addresses.join("\r\n")}
+      Setting.plugin_redmine_ip_filter = {:allowed_ips => allowed_addresses.join("\n")}
       puts delete_addresses.map {|address| "DELETE\t#{address}"}
     end
     
