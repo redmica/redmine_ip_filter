@@ -16,7 +16,7 @@ namespace :redmine_ip_filter do
         abort 'IP addresses to add must be specified with ADDR environment variable'
       end
       filter_rule = FilterRule.find_or_default
-      filter_rule.allowed_ips = (filter_rule.allowed_ips.split + addresses).join("\n")
+      filter_rule.allowed_ips = (filter_rule.allowed_ips.to_s.split + addresses).join("\n")
       unless filter_rule.save
         STDERR.puts filter_rule.errors.messages[:base]
         exit 1
