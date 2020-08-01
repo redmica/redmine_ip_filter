@@ -47,7 +47,7 @@ namespace :redmine_ip_filter do
       
       allowed_addresses -= delete_addresses
       # Use the Setting object to skip validations
-      Setting.plugin_redmine_ip_filter = {:allowed_ips => allowed_addresses.join("\n")}
+      Setting.plugin_redmine_ip_filter = {'allowed_ips' => allowed_addresses.join("\n")}
       puts delete_addresses.map {|address| "DELETE\t#{address}"}
     end
     
