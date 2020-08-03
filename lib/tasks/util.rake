@@ -11,12 +11,12 @@ namespace :redmine_ip_filter do
 
     desc 'Add IP addresses to the allowed IP addresses'
     task :add => :environment do
-      addresses = ENV['ADDR'].to_s.split(/[,[:space:]]/)
+      addresses = parse_addr_param(ENV['ADDR'])
       if addresses.empty?
         abort 'IP addresses to add must be specified with ADDR environment variable'
       end
       filter_rule = FilterRule.find_or_default
-      filter_rule.allowed_ips = (filter_rule.allowed_ips.split + addresses).join("\r\n")
+      filter_rule.allowed_ips = (filter_rule.allowed_ips.to_s.split + addresses).join("\n")
       unless filter_rule.save
         STDERR.puts filter_rule.errors.messages[:base]
         exit 1
@@ -26,7 +26,7 @@ namespace :redmine_ip_filter do
 
     desc 'Delete IP addresses from the allowed IP addresses'
     task :delete => :environment do
-      addresses = ENV['ADDR'].to_s.split(/[,[:space:]]/)
+      addresses = parse_addr_param(ENV['ADDR'])
       if addresses.empty?
         abort 'IP addresses to delete must be specified with ADDR environment variable'
       end
@@ -47,13 +47,13 @@ namespace :redmine_ip_filter do
       
       allowed_addresses -= delete_addresses
       # Use the Setting object to skip validations
-      Setting.plugin_redmine_ip_filter = {:allowed_ips => allowed_addresses.join("\r\n")}
+      Setting.plugin_redmine_ip_filter = {'allowed_ips' => allowed_addresses.join("\n")}
       puts delete_addresses.map {|address| "DELETE\t#{address}"}
     end
     
     desc 'Test if given IP addresses are allowed'
     task :test => :environment do
-      addresses = ENV['REMOTE_ADDR'].to_s.split(/[,[:space:]]/)
+      addresses = parse_addr_param(ENV['REMOTE_ADDR'])
       if addresses.empty?
         abort 'IP addresses to test must be set to REMOTE_ADDR environment variable'
       elsif FilterRule.find_or_default.allowed_ips.blank?
@@ -82,6 +82,11 @@ namespace :redmine_ip_filter do
         print "\t(#{errmsg})" unless errmsg.empty?
         print "\n"
       end
+    end
+
+    private
+    def parse_addr_param(addr)
+      addr.to_s.split(/[,[:space:]]+/)
     end
   end
 end
