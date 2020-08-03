@@ -35,6 +35,19 @@ Access source IP address, which is operating the Redmine management screen, must
 $ git clone https://www.github.com/redmica/redmine_ip_filter.git /path/to/redmine/plugins/redmine_ip_filter
 ```
 
+#### Preventing IP address spoofing
+
+An attacker may be able to bypass access control done by this plugin if the Redmine server directly accepts HTTP requests from clients without a reverse proxy server or a load balancer (see https://api.rubyonrails.org/classes/ActionDispatch/RemoteIp.html for details).
+
+To prevent such an attack, you have to drop `X-Forwarded-For` field from an HTTP request header if you don't use a reverse proxy server that adds `X-Forwarded-For` field.
+
+It can be done by configuring the web server. For example, if you are using Apache, use the `RequestHeader` directive:
+
+```
+RequestHeader unset X-Forwarded-For
+```
+
+
 ## Test
 
 ```
