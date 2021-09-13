@@ -7,6 +7,7 @@ Redmine::Plugin.register :redmine_ip_filter do
   name 'Redmine Ip Filter'
   author 'Far End Technologies Corporation'
   description 'Redmine plugin for access filtering using IP address.'
+  requires_redmine version_or_higher: '4.1'
   version '0.0.1'
   url 'http://github.com/redmica/redmine_ip_filter'
   author_url 'https://hosting.redmine.jp/'
