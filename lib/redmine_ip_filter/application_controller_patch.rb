@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_dependency 'application_controller'
+require 'application_controller'
 
-module RedmineIPFilter
+module RedmineIpFilter
   module ApplicationControllerPatch
     def self.included(base)
       base.send(:include, InstanceMethod)
@@ -31,3 +31,5 @@ module RedmineIPFilter
     end
   end
 end
+
+ApplicationController.send(:include, RedmineIpFilter::ApplicationControllerPatch)
