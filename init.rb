@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require_dependency 'redmine_ip_filter_hook_listener'
-require_dependency 'ip_filter_config'
+require File.expand_path('../lib/redmine_ip_filter/ip_filter_config', __FILE__)
+require File.expand_path('../lib/redmine_ip_filter/application_controller_patch', __FILE__)
+require File.expand_path('../lib/redmine_ip_filter/hook_listener', __FILE__)
 
 Redmine::Plugin.register :redmine_ip_filter do
   name 'Redmine Ip Filter'
@@ -13,9 +14,4 @@ Redmine::Plugin.register :redmine_ip_filter do
   author_url 'https://hosting.redmine.jp/'
   menu :admin_menu, :redmine_ip_filter, { controller: :filter_rules, action: :edit }, caption: :label_ip_filter, :html => { :class => 'icon icon-ip-filter' }
   settings :default => { 'allowed_ips' => '' }
-end
-
-Rails.configuration.to_prepare do
-  require_dependency 'application_controller_patch'
-  ApplicationController.send(:include, RedmineIPFilter::ApplicationControllerPatch)
 end

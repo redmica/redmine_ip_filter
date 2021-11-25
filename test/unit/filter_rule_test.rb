@@ -38,8 +38,8 @@ class FilterRuleTest < ActiveSupport::TestCase
   end
 
   def test_valid_access_returns_true_remote_ip_includes_always_allowed_ip
-    #IPFilterConfig.class_variable_set :@@config, {'always_allowed_ip_list' => ['33.44.55.66']}
-    IPFilterConfig.stubs(:'[]').with('always_allowed_ip_list').returns(['33.44.55.66', '44.55.66.77'])
+    #RedmineIpFilter::IpFilterConfig.class_variable_set :@@config, {'always_allowed_ip_list' => ['33.44.55.66']}
+    RedmineIpFilter::IpFilterConfig.stubs(:'[]').with('always_allowed_ip_list').returns(['33.44.55.66', '44.55.66.77'])
     assert @filter_rule.valid_access?('33.44.55.66')
     assert @filter_rule.valid_access?('44.55.66.77')
   end
