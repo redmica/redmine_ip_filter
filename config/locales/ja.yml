@@ -5,6 +5,7 @@ ja:
   label_ip_filter_formats_html: "<strong>登録可能なIPアドレスの形式例:</strong><br><strong><code>198.51.100.10</code></strong> (単独のIPアドレス), <strong><code>192.0.2.0/28</code></strong> (CIDR記法によるアドレスブロック), <strong><code>192.0.2.0/255.255.255.240</code></strong> (サブネットマスク指定によるアドレスブロック)"
 
   redmine_ip_filter:
+    label_comment_format_description: "# より後ろの文字はコメントとして認識されます。"
     label_address_count_and_limit: "(%{count} 件 / 最大 %{limit} 件)"
 
   activerecord:

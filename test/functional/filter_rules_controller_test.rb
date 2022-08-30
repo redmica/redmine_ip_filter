@@ -44,6 +44,17 @@ class FilterRulesControllerTest < ActionController::TestCase
     assert_equal '', @filter_rule.allowed_ips
   end
 
+  def test_create_with_comment
+    assert @filter_rule.delete
+    new_address_with_comments = "# Admin access address\n11.22.33.44 # system admin ip"
+
+    post :create , :params => { :filter_rule => { :allowed_ips => new_address_with_comments } }
+    assert_redirected_to '/filter_rule/edit'
+    @filter_rule = FilterRule.find_or_default
+    assert_equal '11.22.33.44', @filter_rule.allowed_ips
+    assert_equal new_address_with_comments, @filter_rule.allowed_ips_with_comments
+  end
+
   def test_update
     new_address = "11.22.33.44\n33.44.55.66"
     assert @filter_rule.persisted?
@@ -64,5 +75,16 @@ class FilterRulesControllerTest < ActionController::TestCase
     assert_select 'div#errorExplanation li', :text => I18n.translate(:error_invalid_ip_addres_format_or_value, :message => "invalid address: #{invalid_address}")
     @filter_rule.reload
     assert_equal "11.22.33.44\n22.33.44.55", @filter_rule.allowed_ips
+  end
+
+  def test_update_with_comment
+    new_address_with_comments = "# Admin access address\n11.22.33.44\n\n33.44.55.66 # branch A"
+    assert @filter_rule.persisted?
+
+    put :update, :params => { :filter_rule => { :allowed_ips => new_address_with_comments } }
+    assert_redirected_to '/filter_rule/edit'
+    @filter_rule.reload
+    assert_equal "11.22.33.44\n33.44.55.66", @filter_rule.allowed_ips
+    assert_equal new_address_with_comments, @filter_rule.allowed_ips_with_comments
   end
 end
