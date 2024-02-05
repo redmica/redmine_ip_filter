@@ -6,8 +6,9 @@
   <p><%= t(:label_ip_filter_formats_html) %></p>
   <div class="box tabular settings">
     <p>
-      <%= f.label :allowed_ips %><%= f.text_area :allowed_ips, :rows => 20 %>
+      <%= f.label :allowed_ips %><%= text_area_tag 'filter_rule[allowed_ips]', @filter_rule.allowed_ips_with_comments, :rows => 20 %>
       <em class="info"><%= l(:text_line_separated) %></em>
+      <em class="info"><%= l('redmine_ip_filter.label_comment_format_description') %></em>
       <em class="info"><%= t('redmine_ip_filter.label_address_count_and_limit', :count => @filter_rule.allowed_ip_list.count, :limit => FilterRule::ALLOWED_IP_LIMIT) %></em>
     </p>
   </div>

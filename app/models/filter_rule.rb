@@ -31,11 +31,15 @@ class FilterRule < Setting
   end
 
   def allowed_ips=(ips)
-    self.value = {'allowed_ips' => ips.to_s.split.join("\n")}
+    self.value = {'allowed_ips' => ips.to_s.gsub(/\s*#.*/, '').split.join("\n"), 'allowed_ips_with_comments' => ips.to_s}
   end
 
   def allowed_ips
     self.value['allowed_ips']
+  end
+
+  def allowed_ips_with_comments
+    self.value['allowed_ips_with_comments'].presence || allowed_ips
   end
 
   def allowed_ip_list

@@ -9,6 +9,11 @@ namespace :redmine_ip_filter do
       puts FilterRule.find_or_default.allowed_ips
     end
 
+    desc 'Show the allowed IP addresses with comments'
+    task :show_with_comments => :environment do
+      puts FilterRule.find_or_default.allowed_ips_with_comments
+    end
+
     desc 'Add IP addresses to the allowed IP addresses'
     task :add => :environment do
       addresses = parse_addr_param(ENV['ADDR'])
@@ -16,7 +21,11 @@ namespace :redmine_ip_filter do
         abort 'IP addresses to add must be specified with ADDR environment variable'
       end
       filter_rule = FilterRule.find_or_default
-      filter_rule.allowed_ips = (filter_rule.allowed_ips.to_s.split + addresses).join("\n")
+      if filter_rule.allowed_ips.blank?
+        filter_rule.allowed_ips = addresses.join("\n")
+      else
+        filter_rule.allowed_ips = ([filter_rule.allowed_ips_with_comments] + addresses).join("\n")
+      end
       unless filter_rule.save
         STDERR.puts filter_rule.errors.messages[:base]
         exit 1
@@ -37,17 +46,48 @@ namespace :redmine_ip_filter do
         exit 1
       end
 
-      allowed_addresses = FilterRule.find_or_default.allowed_ips.split
+      filter_rule = FilterRule.find_or_default
+      allowed_addresses = filter_rule.allowed_ips.split
       delete_addresses = []
       allowed_addresses.each do |address|
         if address.present? && ipaddrs_del.include?(IPAddr.new(address))
           delete_addresses << address
         end
       end
-      
       allowed_addresses -= delete_addresses
+
+      allowed_ips_with_comments = filter_rule.allowed_ips_with_comments.split("\n")
+      allowed_ips_with_comments.map! do |allowed_ips_with_comment|
+        # Remove comment and split addr
+        allowed_ips = allowed_ips_with_comment.to_s.gsub(/\s*#.*/, '').split
+        # single address
+        if allowed_ips.count == 1
+          if ipaddrs_del.include?(IPAddr.new(allowed_ips.first))
+            # remove allowed_ip with comment
+            nil
+          else
+            allowed_ips_with_comment
+          end
+        # multiple addresses
+        elsif allowed_ips.count > 1
+          allowed_ips.each do |allowed_ip|
+            if ipaddrs_del.include?(IPAddr.new(allowed_ip))
+              # remove only allowed_ip
+              allowed_ips_with_comment.gsub!(allowed_ip, '').lstrip!
+            end
+          end
+          allowed_ips_with_comment
+        # blank or comment line
+        else
+          allowed_ips_with_comment
+        end
+      end
+
       # Use the Setting object to skip validations
-      Setting.plugin_redmine_ip_filter = {'allowed_ips' => allowed_addresses.join("\n")}
+      Setting.plugin_redmine_ip_filter = {
+        'allowed_ips' => allowed_addresses.join("\n"),
+        'allowed_ips_with_comments' => allowed_ips_with_comments.compact.join("\n")
+      }
       puts delete_addresses.map {|address| "DELETE\t#{address}"}
     end
     

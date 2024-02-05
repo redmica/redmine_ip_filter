@@ -5,7 +5,7 @@ form.edit_filter_rule .tabular.settings p {
 @media screen and (max-width: 899px) { form.edit_filter_rule .tabular.settings p { padding-left: 0px; } }
 form.edit_filter_rule .tabular p textarea {
   padding-left: 0px;
-  width: 200px;
+  width: 400px;
 }
 .forbidden {
   margin: 40vh auto 0;

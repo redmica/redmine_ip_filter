@@ -51,11 +51,28 @@ class FilterRuleTest < ActiveSupport::TestCase
   def test_allowed_ips=
     @filter_rule.allowed_ips = '44.55.66.77'
     assert_equal '44.55.66.77', @filter_rule.value['allowed_ips']
+    assert_equal '44.55.66.77', @filter_rule.value['allowed_ips_with_comments']
+
+    address_with_comments = "#comment\n44.55.66.77 # comment\n55.66.77.88"
+    @filter_rule.allowed_ips = address_with_comments
+    assert_equal "44.55.66.77\n55.66.77.88", @filter_rule.value['allowed_ips']
+    assert_equal address_with_comments, @filter_rule.value['allowed_ips_with_comments']
   end
 
   def test_allowed_ips
     @filter_rule.value = { 'allowed_ips' => '55.66.77.88' }
     assert_equal '55.66.77.88', @filter_rule.allowed_ips
+  end
+
+  def test_allowed_ips_with_comments
+    @filter_rule.value = { 'allowed_ips' => '55.66.77.88', 'allowed_ips_with_comments' => '55.66.77.88 # comment' }
+    assert_equal '55.66.77.88 # comment', @filter_rule.allowed_ips_with_comments
+
+    @filter_rule.value = { 'allowed_ips' => '55.66.77.88', 'allowed_ips_parsed' => nil }
+    assert_equal '55.66.77.88', @filter_rule.allowed_ips_with_comments
+
+    @filter_rule.value = { 'allowed_ips' => '55.66.77.88', 'allowed_ips_parsed' => '' }
+    assert_equal '55.66.77.88', @filter_rule.allowed_ips_with_comments
   end
 
   def test_allowed_ip_list
