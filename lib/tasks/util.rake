@@ -9,11 +9,6 @@ namespace :redmine_ip_filter do
       puts FilterRule.find_or_default.allowed_ips
     end
 
-    desc 'Show the allowed IP addresses with comments'
-    task :show_with_comments => :environment do
-      puts FilterRule.find_or_default.allowed_ips_with_comments
-    end
-
     desc 'Add IP addresses to the allowed IP addresses'
     task :add => :environment do
       addresses = parse_addr_param(ENV['ADDR'])
@@ -31,6 +26,27 @@ namespace :redmine_ip_filter do
         exit 1
       end
       puts addresses.map {|address| "ADD\t#{address}"}
+    end
+
+    desc 'Export the allowed IP addresses with comments'
+    task :export => :environment do
+      puts FilterRule.find_or_default.allowed_ips_with_comments
+    end
+
+    desc 'Import the allowed IP addresses with comments'
+    task :import => :environment do
+      filter_rule = FilterRule.find_or_default
+      import_address_with_comments = ENV['IMPORT']
+      if import_address_with_comments.blank?
+        abort 'IP addresses to add must be specified with IMPORT environment variable'
+      else
+        filter_rule.allowed_ips = ([filter_rule.allowed_ips_with_comments, import_address_with_comments]).join("\n")
+      end
+      unless filter_rule.save
+        STDERR.puts filter_rule.errors.messages[:base]
+        exit 1
+      end
+      puts "IMPORT:\n#{import_address_with_comments}"
     end
 
     desc 'Delete IP addresses from the allowed IP addresses'
