@@ -15,7 +15,7 @@ ja:
 
   notice_forbidden_access_from_your_ip: "%{ip} からのアクセスは許可されていません。"
   notice_filter_rule_was_successfully_updated: アクセス許可IPアドレスを更新しました。
-  error_invalid_ip_addres_format_or_value:     IPアドレスとしてのフォーマットまたは値が正しくありません (%{message}) 。
+  error_invalid_ip_addres_format_or_value:     IPアドレスとしてのフォーマットまたは値が正しくありません (%{ip}) 。
   error_filter_rules_have_to_include_admin_ip: アクセス許可IPアドレスは現在接続中のIPアドレス (%{ip}) を含まなければなりません。
   error_filter_rules_over_limit: アクセス許可IPアドレスの個数が上限 %{limit} を超えるため登録できません。
   error_filter_rules_ipv6: "IPv6アドレス %{ip} は登録できません。"

@@ -56,7 +56,7 @@ class FilterRule < Setting
       begin
         [ip, IPAddr.new(ip)]
       rescue IPAddr::Error => e
-        obj.errors.add(:base, l(:error_invalid_ip_addres_format_or_value, :message => "invalid address: #{ip}"))
+        obj.errors.add(:base, l(:error_invalid_ip_addres_format_or_value, :ip => ip))
         nil
       end
     end.compact.to_h
