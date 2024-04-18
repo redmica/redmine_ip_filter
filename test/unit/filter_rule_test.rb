@@ -96,7 +96,7 @@ class FilterRuleTest < ActiveSupport::TestCase
   def test_validate_format
     @filter_rule.allowed_ips = "11.22.33.44\n\n22.33.44.0/24\n22.33.44.Go"
     assert !@filter_rule.valid?
-    assert_include I18n.translate(:error_invalid_ip_addres_format_or_value, :message => 'invalid address: 22.33.44.Go'), @filter_rule.errors[:base]
+    assert_include I18n.translate(:error_invalid_ip_addres_format_or_value, :ip => '22.33.44.Go'), @filter_rule.errors[:base]
   end
 
   def test_validate_ipv6_addr

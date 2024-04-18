@@ -38,7 +38,7 @@ class FilterRulesControllerTest < ActionController::TestCase
     post :create , :params => { :filter_rule => { :allowed_ips => invalid_address } }
     assert_response :success
     assert_select 'textarea#filter_rule_allowed_ips', :text => invalid_address
-    assert_select 'div#errorExplanation li', :text => I18n.translate(:error_invalid_ip_addres_format_or_value, :message => "invalid address: #{invalid_address}")
+    assert_select 'div#errorExplanation li', :text => I18n.translate(:error_invalid_ip_addres_format_or_value, :ip => invalid_address)
 
     @filter_rule = FilterRule.find_or_default
     assert_equal '', @filter_rule.allowed_ips
@@ -72,7 +72,7 @@ class FilterRulesControllerTest < ActionController::TestCase
     put :update, :params => { :filter_rule => { :allowed_ips => invalid_address } }
     assert_response :success
     assert_select 'textarea#filter_rule_allowed_ips', :text => invalid_address
-    assert_select 'div#errorExplanation li', :text => I18n.translate(:error_invalid_ip_addres_format_or_value, :message => "invalid address: #{invalid_address}")
+    assert_select 'div#errorExplanation li', :text => I18n.translate(:error_invalid_ip_addres_format_or_value, :ip => invalid_address)
     @filter_rule.reload
     assert_equal "11.22.33.44\n22.33.44.55", @filter_rule.allowed_ips
   end
