@@ -1,4 +1,4 @@
-#admin-menu a.redmine-ip-filter { background-image: url(../images/redmine_ip_filter.png); }
+.icon-redmine-ip-filter:not(:has(svg)) { background-image: url(../images/redmine_ip_filter.png); }
 form.edit_filter_rule .tabular.settings p {
   padding-left: 200px;
 }
