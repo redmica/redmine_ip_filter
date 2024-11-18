@@ -107,6 +107,10 @@ REJECT  192.0.2.16
 
 This plugin is licensed under the GNU General Public License, version 2 (GPLv2)
 
+Icons credits:
+
+* Paweł Kuna (Tabler Icons https://tabler.io/icons) licensed under [MIT License](https://opensource.org/license/mit).
+
 ## Author
 
 [Takenori Takaki (Far End Technologies)](https://www.farend.co.jp)
