@@ -3,6 +3,7 @@
 class FilterRulesController < ApplicationController
   layout 'admin'
   self.main_menu = false
+  self.menu_item :redmine_ip_filter
 
   before_action :require_admin
   before_action :set_filter_rule, only: [:edit, :create, :update]
