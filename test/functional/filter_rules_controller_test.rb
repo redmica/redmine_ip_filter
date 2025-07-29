@@ -15,6 +15,12 @@ class FilterRulesControllerTest < ActionController::TestCase
     ActionController::TestRequest.any_instance.stubs(:remote_ip).returns('11.22.33.44')
   end
 
+  def test_admin_menu_selected
+    get :edit
+    assert_response :success
+    assert_select '#admin-menu .redmine-ip-filter.selected', :text => I18n.translate(:label_ip_filter)
+  end
+
   def test_edit
     get :edit
     assert_response :success
