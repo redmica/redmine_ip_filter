@@ -3,6 +3,8 @@ name: Test
 on:
   push:
   pull_request:
+  schedule:
+    - cron: "0 23 * * 0-4"   # 08:00 JST, Monday to Friday
 
 env:
   RAILS_ENV: test
@@ -16,9 +18,6 @@ jobs:
         include:
           - redmine-repository: 'redmica/redmica'
             redmine-version: 'stable-3.2'
-            ruby-version: '3.4'
-          - redmine-repository: 'redmica/redmica'
-            redmine-version: 'master'
             ruby-version: '3.4'
           - redmine-repository: 'redmine/redmine'
             redmine-version: 'master'
