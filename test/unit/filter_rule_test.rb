@@ -17,13 +17,13 @@ class FilterRuleTest < ActiveSupport::TestCase
 
   def test_class_valid_access_returns_true
     remote_ip = '11.22.33.44'
-    FilterRule.any_instance.stubs(:valid_access?).with(remote_ip).returns(true)
+    Setting.stubs(:[]).with('plugin_redmine_ip_filter').returns({'allowed_ips' => remote_ip})
     assert FilterRule.valid_access?(remote_ip)
   end
 
   def test_class_valid_access_returns_false
     remote_ip = '11.22.33.44'
-    FilterRule.any_instance.stubs(:valid_access?).with(remote_ip).returns(false)
+    Setting.stubs(:[]).with('plugin_redmine_ip_filter').returns({'allowed_ips' => '22.33.44.55'})
     assert !FilterRule.valid_access?(remote_ip)
   end
 
@@ -38,10 +38,14 @@ class FilterRuleTest < ActiveSupport::TestCase
   end
 
   def test_valid_access_returns_true_remote_ip_includes_always_allowed_ip
-    #RedmineIpFilter::IpFilterConfig.class_variable_set :@@config, {'always_allowed_ip_list' => ['33.44.55.66']}
     RedmineIpFilter::IpFilterConfig.stubs(:'[]').with('always_allowed_ip_list').returns(['33.44.55.66', '44.55.66.77'])
     assert @filter_rule.valid_access?('33.44.55.66')
     assert @filter_rule.valid_access?('44.55.66.77')
+  end
+
+  def test_valid_access_ignores_invalid_always_allowed_ip
+    RedmineIpFilter::IpFilterConfig.stubs(:'[]').with('always_allowed_ip_list').returns(['invalid', '33.44.55.66'])
+    assert @filter_rule.valid_access?('33.44.55.66')
   end
 
   def test_valid_access_returns_false

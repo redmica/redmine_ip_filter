@@ -4,30 +4,32 @@ class FilterRule < Setting
   require 'ipaddr'
 
   ALLOWED_IP_LIMIT = (ENV['AllowedIPLimit'] || 100).to_i
+  PLUGIN_SETTING_NAME = 'plugin_redmine_ip_filter'
 
   attr_accessor :admin_remote_ip
 
   def self.find_or_default
-    super('plugin_redmine_ip_filter')
+    super(PLUGIN_SETTING_NAME)
   end
 
   def self.valid_access?(remote_ip)
-    self.find_or_default.valid_access?(remote_ip)
+    allowed_ip_addrs = cached_allowed_ip_addrs(
+      current_allowed_ips,
+      RedmineIpFilter::IpFilterConfig['always_allowed_ip_list']
+    )
+    return true if allowed_ip_addrs.empty?
+
+    valid_remote_ip?(remote_ip, allowed_ip_addrs)
   end
 
   def valid_access?(remote_ip)
-    return true if self.allowed_ips.blank?
+    allowed_ip_addrs = self.class.build_allowed_ip_addrs(
+      allowed_ip_list,
+      RedmineIpFilter::IpFilterConfig['always_allowed_ip_list']
+    )
+    return true if allowed_ip_addrs.empty?
 
-    remote_ip_addr = IPAddr.new(remote_ip)
-
-    always_allowed_ip_list = RedmineIpFilter::IpFilterConfig['always_allowed_ip_list'] || []
-    (self.allowed_ip_list | always_allowed_ip_list).any? do |ip|
-      begin
-        IPAddr.new(ip).include?(remote_ip_addr)
-      rescue IPAddr::Error
-        nil
-      end
-    end
+    self.class.valid_remote_ip?(remote_ip, allowed_ip_addrs)
   end
 
   def allowed_ips=(ips)
@@ -44,6 +46,44 @@ class FilterRule < Setting
 
   def allowed_ip_list
     self.allowed_ips.to_s.split
+  end
+
+  # Returns the currently configured allowed IP string from the cached plugin setting.
+  def self.current_allowed_ips
+    value = Setting[PLUGIN_SETTING_NAME]
+    return '' unless value.is_a?(Hash)
+
+    value['allowed_ips'].to_s
+  end
+
+  # Caches the compiled IPAddr list and rebuilds it only when the source IP lists change.
+  def self.cached_allowed_ip_addrs(allowed_ips, always_allowed_ip_list)
+    signature = [allowed_ips.to_s, Array(always_allowed_ip_list).map(&:to_s)]
+    if @allowed_ip_addrs_signature != signature
+      @allowed_ip_addrs_signature = signature
+      @allowed_ip_addrs = build_allowed_ip_addrs(
+        allowed_ips.to_s.split,
+        always_allowed_ip_list
+      )
+    end
+    @allowed_ip_addrs
+  end
+
+  # Converts string-based IP lists into IPAddr objects that can be reused for access checks.
+  def self.build_allowed_ip_addrs(allowed_ip_list, always_allowed_ip_list)
+    (Array(allowed_ip_list) | Array(always_allowed_ip_list)).filter_map do |ip|
+      begin
+        IPAddr.new(ip)
+      rescue IPAddr::Error
+        nil
+      end
+    end
+  end
+
+  # Checks whether the given remote IP is included in any allowed IPAddr entry.
+  def self.valid_remote_ip?(remote_ip, allowed_ip_addrs)
+    remote_ip_addr = IPAddr.new(remote_ip)
+    allowed_ip_addrs.any? {|ip_addr| ip_addr.include?(remote_ip_addr)}
   end
 
   validate do |obj|
