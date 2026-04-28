@@ -5,7 +5,8 @@ module RedmineIpFilter
 
     def self.[](key)
       @@instance ||= new
-      @@config[key]
+      # Freeze the returned value to prevent in-place mutation from corrupting the cache signature.
+      @@config[key]&.freeze
     end
 
     def initialize
