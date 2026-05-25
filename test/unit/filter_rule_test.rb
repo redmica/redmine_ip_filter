@@ -5,6 +5,10 @@ require File.expand_path('../../test_helper', __FILE__)
 class FilterRuleTest < ActiveSupport::TestCase
 
   def setup
+    Setting.clear_cache
+    FilterRule.instance_variable_set(:@cached_rule, nil)
+    FilterRule.instance_variable_set(:@cached_rule_setting, nil)
+
     @filter_rule = FilterRule.find_or_default
     @filter_rule.admin_remote_ip = '11.22.33.44'
     @filter_rule.allowed_ips="11.22.33.44\n22.33.44.55"
@@ -162,33 +166,26 @@ class FilterRuleTest < ActiveSupport::TestCase
   end
 
   def test_class_valid_access_caches_rule
-    # Reset the class-level cache
-    FilterRule.instance_variable_set(:@cached_rule, nil)
-    FilterRule.instance_variable_set(:@cached_rule_setting, nil)
-
     # find_or_default should be called only once when the setting has not changed
     FilterRule.expects(:find_or_default).once.returns(@filter_rule)
     2.times { FilterRule.valid_access?('11.22.33.44') }
   end
 
-  def test_class_valid_access_reloads_rule_when_setting_changes
-    # Reset the class-level cache
-    FilterRule.instance_variable_set(:@cached_rule, nil)
-    FilterRule.instance_variable_set(:@cached_rule_setting, nil)
+  def test_class_valid_access_uses_updated_allowed_ips_when_setting_changes
+    Setting[FilterRule::PLUGIN_SETTING_NAME] = {
+      'allowed_ips' => '11.22.33.44',
+      'allowed_ips_with_comments' => '11.22.33.44'
+    }
 
-    original_setting = Setting[FilterRule::PLUGIN_SETTING_NAME]
-    begin
-      # find_or_default should be called twice: once for each distinct setting value
-      FilterRule.expects(:find_or_default).twice.returns(@filter_rule)
-      FilterRule.valid_access?('11.22.33.44')
+    assert FilterRule.valid_access?('11.22.33.44')
+    assert !FilterRule.valid_access?('22.33.44.55')
 
-      updated_setting = original_setting.is_a?(Hash) ? original_setting.merge('cache_test' => 'changed') : {'cache_test' => 'changed'}
-      Setting[FilterRule::PLUGIN_SETTING_NAME] = updated_setting
-      FilterRule.valid_access?('11.22.33.44')
+    Setting[FilterRule::PLUGIN_SETTING_NAME] = {
+      'allowed_ips' => '22.33.44.55',
+      'allowed_ips_with_comments' => '22.33.44.55'
+    }
 
-      assert_equal updated_setting, FilterRule.instance_variable_get(:@cached_rule_setting)
-    ensure
-      Setting[FilterRule::PLUGIN_SETTING_NAME] = original_setting
-    end
+    assert !FilterRule.valid_access?('11.22.33.44')
+    assert FilterRule.valid_access?('22.33.44.55')
   end
 end
