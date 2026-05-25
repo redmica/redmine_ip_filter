@@ -5,6 +5,10 @@ require File.expand_path('../../test_helper', __FILE__)
 class FilterRuleTest < ActiveSupport::TestCase
 
   def setup
+    Setting.clear_cache
+    FilterRule.instance_variable_set(:@cached_rule, nil)
+    FilterRule.instance_variable_set(:@cached_rule_setting, nil)
+
     @filter_rule = FilterRule.find_or_default
     @filter_rule.admin_remote_ip = '11.22.33.44'
     @filter_rule.allowed_ips="11.22.33.44\n22.33.44.55"
@@ -138,5 +142,50 @@ class FilterRuleTest < ActiveSupport::TestCase
     @filter_rule.allowed_ips = "22.33.43.0/24"
     assert !@filter_rule.valid?
     assert_include I18n.translate(:error_filter_rules_have_to_include_admin_ip, :ip => @filter_rule.admin_remote_ip), @filter_rule.errors[:base]
+  end
+
+  def test_valid_access_caches_ip_addrs
+    # The cache is built on the first call
+    @filter_rule.valid_access?('11.22.33.44')
+    cached_addrs = @filter_rule.instance_variable_get(:@cached_ip_addrs)
+    assert_not_nil cached_addrs
+
+    # The same object is reused when allowed_ips has not changed
+    @filter_rule.valid_access?('22.33.44.55')
+    assert_same cached_addrs, @filter_rule.instance_variable_get(:@cached_ip_addrs)
+  end
+
+  def test_valid_access_rebuilds_cache_when_allowed_ips_changes
+    @filter_rule.valid_access?('11.22.33.44')
+    cached_addrs = @filter_rule.instance_variable_get(:@cached_ip_addrs)
+
+    # The cache is rebuilt when allowed_ips changes
+    @filter_rule.allowed_ips = "33.44.55.66"
+    @filter_rule.valid_access?('33.44.55.66')
+    refute_same cached_addrs, @filter_rule.instance_variable_get(:@cached_ip_addrs)
+  end
+
+  def test_class_valid_access_caches_rule
+    # find_or_default should be called only once when the setting has not changed
+    FilterRule.expects(:find_or_default).once.returns(@filter_rule)
+    2.times { FilterRule.valid_access?('11.22.33.44') }
+  end
+
+  def test_class_valid_access_uses_updated_allowed_ips_when_setting_changes
+    Setting[FilterRule::PLUGIN_SETTING_NAME] = {
+      'allowed_ips' => '11.22.33.44',
+      'allowed_ips_with_comments' => '11.22.33.44'
+    }
+
+    assert FilterRule.valid_access?('11.22.33.44')
+    assert !FilterRule.valid_access?('22.33.44.55')
+
+    Setting[FilterRule::PLUGIN_SETTING_NAME] = {
+      'allowed_ips' => '22.33.44.55',
+      'allowed_ips_with_comments' => '22.33.44.55'
+    }
+
+    assert !FilterRule.valid_access?('11.22.33.44')
+    assert FilterRule.valid_access?('22.33.44.55')
   end
 end

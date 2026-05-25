@@ -4,15 +4,23 @@ class FilterRule < Setting
   require 'ipaddr'
 
   ALLOWED_IP_LIMIT = (ENV['AllowedIPLimit'] || 100).to_i
+  PLUGIN_SETTING_NAME = 'plugin_redmine_ip_filter'
 
   attr_accessor :admin_remote_ip
 
   def self.find_or_default
-    super('plugin_redmine_ip_filter')
+    super(PLUGIN_SETTING_NAME)
   end
 
   def self.valid_access?(remote_ip)
-    self.find_or_default.valid_access?(remote_ip)
+    # Use Setting[] to read from Redmine's in-memory cache without a DB query.
+    # Call find_or_default only when the setting value has changed.
+    current_setting = Setting[PLUGIN_SETTING_NAME]
+    if @cached_rule.nil? || @cached_rule_setting != current_setting
+      @cached_rule = find_or_default
+      @cached_rule_setting = current_setting
+    end
+    @cached_rule.valid_access?(remote_ip)
   end
 
   def valid_access?(remote_ip)
@@ -21,13 +29,16 @@ class FilterRule < Setting
     remote_ip_addr = IPAddr.new(remote_ip)
 
     always_allowed_ip_list = RedmineIpFilter::IpFilterConfig['always_allowed_ip_list'] || []
-    (self.allowed_ip_list | always_allowed_ip_list).any? do |ip|
-      begin
-        IPAddr.new(ip).include?(remote_ip_addr)
-      rescue IPAddr::Error
-        nil
-      end
+    sig = [self.allowed_ips.to_s, always_allowed_ip_list]
+
+    if @cached_ip_addrs_sig != sig
+      @cached_ip_addrs = (self.allowed_ip_list | always_allowed_ip_list).map { |ip|
+        begin; IPAddr.new(ip); rescue IPAddr::Error; nil; end
+      }.compact
+      @cached_ip_addrs_sig = sig
     end
+
+    @cached_ip_addrs.any? { |ip_addr| ip_addr.include?(remote_ip_addr) }
   end
 
   def allowed_ips=(ips)

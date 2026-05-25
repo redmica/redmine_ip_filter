@@ -28,4 +28,12 @@ class IpFilterConfigTest < ActiveSupport::TestCase
 
     assert_nil RedmineIpFilter::IpFilterConfig['always_allowed_ip_list']
   end
+
+  def test_always_allowed_ip_list_is_frozen
+    File.stubs(:file?).with(@config_file).returns(true)
+    YAML.stubs(:load_file).with(@config_file).returns(@yml_data)
+
+    result = RedmineIpFilter::IpFilterConfig['always_allowed_ip_list']
+    assert result.frozen?, 'returned array should be frozen to prevent cache signature corruption'
+  end
 end
