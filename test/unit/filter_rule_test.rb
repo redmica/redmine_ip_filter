@@ -170,4 +170,25 @@ class FilterRuleTest < ActiveSupport::TestCase
     FilterRule.expects(:find_or_default).once.returns(@filter_rule)
     2.times { FilterRule.valid_access?('11.22.33.44') }
   end
+
+  def test_class_valid_access_reloads_rule_when_setting_changes
+    # Reset the class-level cache
+    FilterRule.instance_variable_set(:@cached_rule, nil)
+    FilterRule.instance_variable_set(:@cached_rule_setting, nil)
+
+    original_setting = Setting[FilterRule::PLUGIN_SETTING_NAME]
+    begin
+      # find_or_default should be called twice: once for each distinct setting value
+      FilterRule.expects(:find_or_default).twice.returns(@filter_rule)
+      FilterRule.valid_access?('11.22.33.44')
+
+      updated_setting = original_setting.is_a?(Hash) ? original_setting.merge('cache_test' => 'changed') : {'cache_test' => 'changed'}
+      Setting[FilterRule::PLUGIN_SETTING_NAME] = updated_setting
+      FilterRule.valid_access?('11.22.33.44')
+
+      assert_equal updated_setting, FilterRule.instance_variable_get(:@cached_rule_setting)
+    ensure
+      Setting[FilterRule::PLUGIN_SETTING_NAME] = original_setting
+    end
+  end
 end
