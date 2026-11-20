@@ -37,14 +37,18 @@ $ git clone https://www.github.com/redmica/redmine_ip_filter.git /path/to/redmin
 
 #### Preventing IP address spoofing
 
-An attacker may be able to bypass access control done by this plugin if the Redmine server directly accepts HTTP requests from clients without a reverse proxy server or a load balancer (see https://api.rubyonrails.org/classes/ActionDispatch/RemoteIp.html for details).
+This plugin checks the IP address returned by Rails' `request.remote_ip`. The [`ActionDispatch::RemoteIp`](https://api.rubyonrails.org/classes/ActionDispatch/RemoteIp.html) middleware calculates this value from the remote address of the connection and from HTTP request headers that proxy servers are expected to set. An attacker may be able to bypass the plugin's IP restrictions if client-supplied values for these headers reach Redmine. Which headers are used depends on the versions and configuration of Rails and Rack.
 
-To prevent such an attack, you have to drop `X-Forwarded-For` field from an HTTP request header if you don't use a reverse proxy server that adds `X-Forwarded-For` field.
+To prevent such an attack, you have to drop these headers from an HTTP request unless they are set by a proxy server you trust.
 
-It can be done by configuring the web server. For example, if you are using Apache, use the `RequestHeader` directive:
+For example, if the Redmine server directly accepts HTTP requests from clients without a reverse proxy server or a load balancer, you have to drop all of them. With Rails 8.1.4.1 and Rack 3 using default settings, `X-Forwarded-For`, `Client-IP`, and `Forwarded` are used.
+
+These headers can be dropped by configuring the web server. For example, if you are using Apache, use the `RequestHeader` directive:
 
 ```
 RequestHeader unset X-Forwarded-For
+RequestHeader unset Client-IP
+RequestHeader unset Forwarded
 ```
 
 
